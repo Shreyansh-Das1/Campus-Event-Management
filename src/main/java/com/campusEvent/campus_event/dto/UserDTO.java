@@ -1,7 +1,6 @@
 package com.campusEvent.campus_event.dto;
 
-import com.campusEvent.campus_event.entity.Role;
-import jdk.jfr.DataAmount;
+import com.campusEvent.campus_event.entity.enums.Role;
 import lombok.Data;
 
 @Data
