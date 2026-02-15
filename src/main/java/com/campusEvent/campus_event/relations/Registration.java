@@ -2,6 +2,7 @@ package com.campusEvent.campus_event.relations;
 
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.User;
+import com.campusEvent.campus_event.entity.enums.RegisStatus;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,13 +12,14 @@ import jakarta.persistence.*;
 )
 public class Registration {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name="TicketID")
-    int ticketId;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name="Registration_ID")
+    long registrationId;
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="User ID")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="User_ID")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="Event ID")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="Event_ID")
     private Event event;
-
+    @Enumerated(value = EnumType.STRING)
+    private RegisStatus rs;
 }
