@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -34,5 +33,5 @@ public class Event {
 
     @Column
     @Enumerated(EnumType.STRING)
-    EventStatus EventStatus;
+    EventStatus Eventstatus;
 }
