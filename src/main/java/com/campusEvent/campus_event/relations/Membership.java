@@ -4,6 +4,7 @@ import com.campusEvent.campus_event.entity.Club;
 import com.campusEvent.campus_event.entity.enums.ClubSeniority;
 import com.campusEvent.campus_event.entity.User;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -23,6 +24,7 @@ public class Membership {
     @Column
     ClubSeniority cs;
 }
+@Data
 @Embeddable
 class MembershipID implements Serializable
 {

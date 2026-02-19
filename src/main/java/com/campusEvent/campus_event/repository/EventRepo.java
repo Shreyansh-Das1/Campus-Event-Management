@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface EventRepo extends JpaRepository<Event,Long> {
-    List<Event> findByEventStatus(EventStatus eventStatus);
+    List<Event> findByEventStatus(EventStatus Eventstatus);
     //List<Event> findByClub_ClubID(Long club_id);
 }

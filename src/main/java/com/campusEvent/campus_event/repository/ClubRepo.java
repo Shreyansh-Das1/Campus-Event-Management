@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface ClubRepo extends JpaRepository<Club,Long> {
-    boolean existsByClubId(Long clubId);
-    Club findByClubId(Long clubId);
+    boolean existsByClubID(Long clubId);
+    Club findByClubID(Long clubId);
 
     boolean existsByClubName(String clubName);
 }

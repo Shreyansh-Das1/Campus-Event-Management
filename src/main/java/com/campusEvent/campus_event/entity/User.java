@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 @Getter @Setter
+@Table(name  = "users")
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
