@@ -33,5 +33,5 @@ public class Event {
 
     @Column
     @Enumerated(EnumType.STRING)
-    EventStatus Eventstatus;
+    EventStatus eventStatus;
 }

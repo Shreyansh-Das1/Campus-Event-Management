@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
-
 @Service
 public class EventService {
     @Autowired
@@ -39,14 +37,14 @@ public class EventService {
         EventResDTO dto = new EventResDTO();
         dto.setEventid(event.getEventid());
         dto.setTitle(event.getTitle());
-        dto.setEventStatus(event.getEventstatus());
+        dto.setEventStatus(event.getEventStatus());
         dto.setClubName(event.getClub().getClubName());
         return dto;
     }
     private Event mapFroDTO(EventReqDTO erqdto)
     {
         Event e = new Event();
-        e.setEventstatus(EventStatus.PENDING);
+        e.setEventStatus(EventStatus.PENDING);
         e.setDescription(erqdto.getDescription());
         e.setDate(erqdto.getDate());
         e.setStartTime(erqdto.getStartTime());
