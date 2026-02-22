@@ -15,6 +15,7 @@ import java.util.List;
 public class EventService {
     @Autowired
     private EventRepo Eventrepo;
+    @Autowired
     private ClubService cs;
     public EventResDTO createEvent(EventReqDTO erqdto){
         if(!cs.existsByClubId(erqdto.getClubID()))
@@ -30,6 +31,13 @@ public class EventService {
             res.add(mapToDTO(e));
         return res;
     }
+   /* public List<EventResDTO> getAllEvents(Long clubID) {
+        List<Event> ev = Eventrepo.findByClub(clubID);
+        List<EventResDTO> res = new ArrayList<>();
+        for (Event e : ev)
+            res.add(mapToDTO(e));
+        return res;
+    }*/
 
     public List<Event> getApprovedEvents(){ return Eventrepo.findByEventStatus(EventStatus.APPROVED); }
 

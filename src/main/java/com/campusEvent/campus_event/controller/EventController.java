@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller("/event")
+@RestController("/event")
 public class EventController {
 
     @Autowired

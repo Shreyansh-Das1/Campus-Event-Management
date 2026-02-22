@@ -26,7 +26,7 @@ public class ClubService {
 
     public List<Club> getAllClubs(){ return clubrepo.findAll(); }
 
-    boolean existsByClubId(Long clubId){ return clubrepo.existsById(clubId);  }
+    public boolean existsByClubId(Long clubId){ return clubrepo.existsById(clubId);  }
 
     public Club findClubById(Long clubId){
         return clubrepo.findById(clubId).get();

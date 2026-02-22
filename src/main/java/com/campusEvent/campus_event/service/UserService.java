@@ -4,6 +4,7 @@ import com.campusEvent.campus_event.dto.UserDTO;
 import com.campusEvent.campus_event.entity.User;
 import com.campusEvent.campus_event.repository.UserRepo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
     UserRepo ur;
 
     public String registerUser(UserDTO udto) throws Exception{
