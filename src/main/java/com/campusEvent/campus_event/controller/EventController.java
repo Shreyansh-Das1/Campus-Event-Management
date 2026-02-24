@@ -1,16 +1,15 @@
 package com.campusEvent.campus_event.controller;
 
-import com.campusEvent.campus_event.dto.ClubResDTO;
 import com.campusEvent.campus_event.dto.EventReqDTO;
 import com.campusEvent.campus_event.dto.EventResDTO;
 import com.campusEvent.campus_event.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/event")
+@RestController
+@RequestMapping("/api/event")
 public class EventController {
 
     @Autowired
