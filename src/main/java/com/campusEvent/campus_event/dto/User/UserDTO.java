@@ -1,4 +1,4 @@
-package com.campusEvent.campus_event.dto;
+package com.campusEvent.campus_event.dto.User;
 
 import com.campusEvent.campus_event.entity.enums.Role;
 import lombok.Data;

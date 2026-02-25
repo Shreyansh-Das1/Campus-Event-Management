@@ -1,7 +1,7 @@
 package com.campusEvent.campus_event.service;
 
-import com.campusEvent.campus_event.dto.EventReqDTO;
-import com.campusEvent.campus_event.dto.EventResDTO;
+import com.campusEvent.campus_event.dto.Event.EventReqDTO;
+import com.campusEvent.campus_event.dto.Event.EventResDTO;
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.enums.EventStatus;
 import com.campusEvent.campus_event.repository.EventRepo;

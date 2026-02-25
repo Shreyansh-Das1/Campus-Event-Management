@@ -1,7 +1,7 @@
 package com.campusEvent.campus_event.service;
 
-import com.campusEvent.campus_event.dto.ClubReqDTO;
-import com.campusEvent.campus_event.dto.ClubResDTO;
+import com.campusEvent.campus_event.dto.Club.ClubReqDTO;
+import com.campusEvent.campus_event.dto.Club.ClubResDTO;
 import com.campusEvent.campus_event.entity.Club;
 import com.campusEvent.campus_event.repository.ClubRepo;
 import org.springframework.beans.factory.annotation.Autowired;

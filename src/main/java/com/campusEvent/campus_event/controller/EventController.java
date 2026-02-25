@@ -1,7 +1,7 @@
 package com.campusEvent.campus_event.controller;
 
-import com.campusEvent.campus_event.dto.EventReqDTO;
-import com.campusEvent.campus_event.dto.EventResDTO;
+import com.campusEvent.campus_event.dto.Event.EventReqDTO;
+import com.campusEvent.campus_event.dto.Event.EventResDTO;
 import com.campusEvent.campus_event.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

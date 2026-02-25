@@ -1,8 +1,6 @@
-package com.campusEvent.campus_event.dto;
+package com.campusEvent.campus_event.dto.Event;
 
-import com.campusEvent.campus_event.entity.Club;
 import com.campusEvent.campus_event.entity.enums.EventStatus;
-import jakarta.persistence.*;
 import lombok.Setter;
 
 import java.time.LocalDateTime;

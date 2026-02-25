@@ -1,4 +1,4 @@
-package com.campusEvent.campus_event.dto;
+package com.campusEvent.campus_event.dto.Club;
 
 import lombok.Getter;
 

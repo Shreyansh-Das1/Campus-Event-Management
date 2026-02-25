@@ -1,11 +1,9 @@
 package com.campusEvent.campus_event.controller;
 
-import com.campusEvent.campus_event.dto.ClubReqDTO;
-import com.campusEvent.campus_event.dto.ClubResDTO;
-import com.campusEvent.campus_event.entity.Club;
+import com.campusEvent.campus_event.dto.Club.ClubReqDTO;
+import com.campusEvent.campus_event.dto.Club.ClubResDTO;
 import com.campusEvent.campus_event.service.ClubService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
