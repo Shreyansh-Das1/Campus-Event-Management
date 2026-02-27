@@ -40,10 +40,11 @@ public class JwtService {
 }
 
 
-/*JWT has 3  parts, Header, payload and signature.
- Header contains the algo used, while payload has payload and signature ensures it has not been tampered.
- It is not stored on server.
- This Service performs 3 tasks, Generation, Extraction, and Validation.
- @Service is just specialized version of @Component.
- we use Service when we deal with business logic but this is just a utility
+/*
+> JWT has 3  parts, Header, payload and signature.
+  Header contains the algo used, while payload is payload and signature ensures it has not been tampered.
+ > It is not stored on server.
+ > This Service performs 3 tasks, Generation, Extraction, and Validation.
+ > @Service is just specialized version of @Component.
+    we use Service when we deal with business logic but this is just a utility
  */

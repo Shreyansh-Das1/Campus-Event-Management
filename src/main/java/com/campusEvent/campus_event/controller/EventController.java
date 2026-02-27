@@ -2,8 +2,12 @@ package com.campusEvent.campus_event.controller;
 
 import com.campusEvent.campus_event.dto.Event.EventReqDTO;
 import com.campusEvent.campus_event.dto.Event.EventResDTO;
+import com.campusEvent.campus_event.entity.Event;
+import com.campusEvent.campus_event.entity.enums.EventStatus;
+import com.campusEvent.campus_event.entity.enums.Role;
 import com.campusEvent.campus_event.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,13 +19,25 @@ public class EventController {
     @Autowired
     EventService eventService;
 
+    @PreAuthorize("hasRole('ORGANIZE')")
     @PostMapping("/create")
     public @ResponseBody EventResDTO createEvent(@RequestBody EventReqDTO erqdto) {
         return eventService.createEvent(erqdto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}/approval")
+    public @ResponseBody EventResDTO approveEvent(@PathVariable long id, @RequestBody EventStatus es) {
+        return eventService.eventApproval(id, es);
+    }
+
+    @GetMapping("/getappr")
+    public @ResponseBody List<Event> getApproved(Role role) {
+        return eventService.getEvents(role);
+    }
+
     @GetMapping
-    public @ResponseBody List<EventResDTO> getEvents(@RequestParam Long clubID) {
+    public @ResponseBody List<EventResDTO> getEventsByCLub(@RequestParam Long clubID) {
         return eventService.getAllEvents();
     }
 }

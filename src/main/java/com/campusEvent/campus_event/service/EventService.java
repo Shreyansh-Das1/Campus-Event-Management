@@ -4,17 +4,20 @@ import com.campusEvent.campus_event.dto.Event.EventReqDTO;
 import com.campusEvent.campus_event.dto.Event.EventResDTO;
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.enums.EventStatus;
+import com.campusEvent.campus_event.entity.enums.Role;
 import com.campusEvent.campus_event.repository.EventRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EventService {
     @Autowired
-    private EventRepo Eventrepo;
+    private EventRepo eventrepo;
+
     @Autowired
     private ClubService cs;
     public EventResDTO createEvent(EventReqDTO erqdto){
@@ -25,11 +28,20 @@ public class EventService {
     }
 
     public List<EventResDTO> getAllEvents() {
-        List<Event> ev = Eventrepo.findAll();
+        List<Event> ev = eventrepo.findAll();
         List<EventResDTO> res = new ArrayList<>();
         for (Event e : ev)
             res.add(mapToDTO(e));
         return res;
+    }
+    public EventResDTO eventApproval(Long id, EventStatus es)
+    {
+
+        Event ev = eventrepo.findById(id)
+                .orElseThrow(()->new RuntimeException("Event Not Found"));
+        ev.setEventStatus(es);
+        eventrepo.save(ev);
+        return  mapToDTO(ev);
     }
    /* public List<EventResDTO> getAllEvents(Long clubID) {
         List<Event> ev = Eventrepo.findByClub(clubID);
@@ -39,7 +51,18 @@ public class EventService {
         return res;
     }*/
 
-    public List<Event> getApprovedEvents(){ return Eventrepo.findByEventStatus(EventStatus.APPROVED); }
+    public List<Event> getEvents(Role role){
+        switch (role){
+            case ADMIN:
+                return eventrepo.findAll();
+            case STUDENT:
+                return eventrepo.findByEventStatus(EventStatus.APPROVED);
+            default:
+                List<Event> evs = eventrepo.findByEventStatus(EventStatus.APPROVED);
+                evs.addAll(eventrepo.findByEventStatus(EventStatus.PENDING));
+                return evs;
+        }
+    }
 
     private EventResDTO mapToDTO(Event event) {
         EventResDTO dto = new EventResDTO();
@@ -48,6 +71,9 @@ public class EventService {
         dto.setEventStatus(event.getEventStatus());
         dto.setClubName(event.getClub().getClubName());
         return dto;
+    }
+    public Event findById(long id) {
+        return eventrepo.findById(id);
     }
     private Event mapFroDTO(EventReqDTO erqdto)
     {
@@ -61,7 +87,7 @@ public class EventService {
         e.setCapacity(erqdto.getCapacity());
         e.setClub(cs.findClubById(erqdto.getClubID()));
         e.setTitle(erqdto.getTitle());
-        Eventrepo.save(e);
+        eventrepo.save(e);
         return e;
     }
 }
