@@ -6,7 +6,10 @@ import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.enums.EventStatus;
 import com.campusEvent.campus_event.entity.enums.Role;
 import com.campusEvent.campus_event.repository.EventRepo;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.net.http.HttpResponse;
@@ -51,11 +54,13 @@ public class EventService {
         return res;
     }*/
 
-    public List<Event> getEvents(Role role){
+    public List<Event> getEvents(){
+        @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String role = auth.getAuthorities().iterator().next().getAuthority();
         switch (role){
-            case ADMIN:
+            case "ROLE_ADMIN":
                 return eventrepo.findAll();
-            case STUDENT:
+            case "ROLE_STUDENT":
                 return eventrepo.findByEventStatus(EventStatus.APPROVED);
             default:
                 List<Event> evs = eventrepo.findByEventStatus(EventStatus.APPROVED);
@@ -71,9 +76,6 @@ public class EventService {
         dto.setEventStatus(event.getEventStatus());
         dto.setClubName(event.getClub().getClubName());
         return dto;
-    }
-    public Event findById(long id) {
-        return eventrepo.findById(id);
     }
     private Event mapFroDTO(EventReqDTO erqdto)
     {

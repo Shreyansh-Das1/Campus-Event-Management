@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Autowired
     UserRepo ur;
 

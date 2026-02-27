@@ -19,7 +19,7 @@ public class EventController {
     @Autowired
     EventService eventService;
 
-    @PreAuthorize("hasRole('ORGANIZE')")
+    @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping("/create")
     public @ResponseBody EventResDTO createEvent(@RequestBody EventReqDTO erqdto) {
         return eventService.createEvent(erqdto);
@@ -32,8 +32,8 @@ public class EventController {
     }
 
     @GetMapping("/getappr")
-    public @ResponseBody List<Event> getApproved(Role role) {
-        return eventService.getEvents(role);
+    public @ResponseBody List<Event> getApproved() {
+        return eventService.getEvents();
     }
 
     @GetMapping
