@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RegisRepo extends JpaRepository<Registration,Long> {
-    boolean existsByUser(User user, Event event);
+    boolean existsByUser(Long userId, long eventId);
     List<Registration> findByEvent(Event event); //Finds all Event attendees
     List<Registration> findByUser(User user); //Finds all events an user registered for
 }

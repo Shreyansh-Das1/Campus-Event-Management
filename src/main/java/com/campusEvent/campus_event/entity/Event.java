@@ -15,23 +15,22 @@ public class Event {
     @Column(name="Event_ID")
     private long Eventid;
 
-    @Column
-    String title, description, venue;
+    @Column private String title, description, venue;
 
-    @Column
-    int capacity;
+    @Column private int capacity;
+    @Column private int booked = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "Club_ID")
     private Club club;
 
-    @Column
-    LocalDateTime date;
+    @Column private LocalDateTime date;
 
-    @Column
-    LocalTime startTime, endTime;
+    @Column private LocalTime startTime, endTime;
 
+    @Version private int version;
     @Column
     @Enumerated(EnumType.STRING)
-    EventStatus eventStatus;
+    private EventStatus eventStatus;
+
 }

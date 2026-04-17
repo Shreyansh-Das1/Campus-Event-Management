@@ -5,13 +5,18 @@ import com.campusEvent.campus_event.dto.Event.EventResDTO;
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.enums.EventStatus;
 import com.campusEvent.campus_event.entity.enums.Role;
+import com.campusEvent.campus_event.relations.Registration;
 import com.campusEvent.campus_event.repository.EventRepo;
+import com.campusEvent.campus_event.repository.RegisRepo;
+import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +24,9 @@ import java.util.List;
 @Service
 public class EventService {
     @Autowired
-    private EventRepo eventrepo;
+    private EventRepo eventrepo;.
+    @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String role = auth.getAuthorities().iterator().next().getAuthority();
 
     @Autowired
     private ClubService cs;
@@ -53,10 +60,7 @@ public class EventService {
             res.add(mapToDTO(e));
         return res;
     }*/
-
-    public List<Event> getEvents(){
-        @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String role = auth.getAuthorities().iterator().next().getAuthority();
+  public List<Event> getEvents(){
         switch (role){
             case "ROLE_ADMIN":
                 return eventrepo.findAll();
@@ -89,6 +93,7 @@ public class EventService {
         e.setCapacity(erqdto.getCapacity());
         e.setClub(cs.findClubById(erqdto.getClubID()));
         e.setTitle(erqdto.getTitle());
+        e.setBooked(0);
         eventrepo.save(e);
         return e;
     }
