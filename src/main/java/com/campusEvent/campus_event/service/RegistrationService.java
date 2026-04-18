@@ -2,14 +2,10 @@ package com.campusEvent.campus_event.service;
 
 import com.campusEvent.campus_event.dto.ResObj;
 import com.campusEvent.campus_event.dto.Event.RegistrationDTO;
-import com.campusEvent.campus_event.entity.Club;
-import com.campusEvent.campus_event.entity.Event;
-import com.campusEvent.campus_event.entity.User;
+import com.campusEvent.campus_event.entity.*;
 import com.campusEvent.campus_event.entity.enums.RegisStatus;
 import com.campusEvent.campus_event.relations.Registration;
-import com.campusEvent.campus_event.repository.EventRepo;
-import com.campusEvent.campus_event.repository.MembershipRepo;
-import com.campusEvent.campus_event.repository.RegisRepo;
+import com.campusEvent.campus_event.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.jspecify.annotations.Nullable;
@@ -31,22 +27,21 @@ public class RegistrationService {
     @Autowired
             private MembershipRepo membershipRepo;
     Event e;
-    @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 
     public ResObj cancel(Long eventId){
-        User user = (User) auth.getPrincipal();
+        User user = (User) getAuthentication().getPrincipal();
         if(!regisRepo.existsByUser(user.getId(), eventId))
             return new ResObj(false,"Registration does not exist");
 
-        Registration regist = regisRepo.findByEventAndUser(eventId, user.getId()).orElse(null);
+        Registration regist = regisRepo.findByUser_IdAndEvent_Eventid(eventId, user.getId()).orElse(null);
         regist.setRegStats(RegisStatus.CANCELLED);
         regisRepo.save(regist);
 
         Event e = regist.getEvent();
         e.setBooked( e.getBooked() -1);
         eventrepo.save(e);
-        
+
         return new ResObj(true,"Registration has been cancelled successfully");
     }
 
@@ -67,31 +62,35 @@ public class RegistrationService {
     }
 
     public List<Registration> fetchRegistered(){
-        User user = (User) auth.getPrincipal();
+        User user = (User) getAuthentication().getPrincipal();
         return regisRepo.findByUser(user);
 
     }
 
     boolean userOfOrgClub(Event event){
         Club organizer= event.getClub();
-        User currUser = (User) auth.getPrincipal();
-        return membershipRepo.existsByClubAndUser(organizer.getClubID(), currUser.getId());
+        User currUser = (User) getAuthentication().getPrincipal();
+        return membershipRepo.existsByUser_IdAndClub_ClubId(organizer.getClubId(), currUser.getId());
     }
 
     @Transactional
     @SneakyThrows //Used to declare multiple checked errors could be thrown
     public RegistrationDTO reserveSeat(Long eventId) {
 
-        Long userId = Long.parseLong(auth.getName());
-        String role = auth.getAuthorities().iterator().next().getAuthority();
+        Long userId = Long.parseLong(getAuthentication().getName());
+        String role = getAuthentication().getAuthorities().iterator().next().getAuthority();
         //NEVER INVOKE SECURITYCONTEXT OUTSIDE METHODS
         if(!eventrepo.existsById(eventId))
             throw new IllegalStateException("Event Not Found");
+
         if(!role.equals("ROLE_STUDENT"))
             throw new IllegalAccessException(role+" not allowed");
+
         if( regisRepo.existsByUser(userId, eventId))
             throw new IllegalStateException("User already registered");
+
         e =  eventrepo.findById(eventId).get();
+
         if(eventrepo.registerSeat(eventId) == 0)
             throw new IllegalStateException("Event Full");
         else
@@ -102,7 +101,7 @@ public class RegistrationService {
 
     private RegistrationDTO mapToDTO(Long eventId, Long userId) {
         Registration reg = new Registration();
-        reg.setUser((User) auth.getPrincipal());
+        reg.setUser((User) getAuthentication().getPrincipal());
         Event ev = eventrepo.findById(eventId).get();
         reg.setEvent(ev);
         reg.setRegStats(RegisStatus.ACTIVE);
@@ -113,5 +112,10 @@ public class RegistrationService {
         dto.setRegisStatus(reg.getRegStats());
         dto.setEvTitle(ev.getTitle());
         return dto;
+    }
+
+    private Authentication getAuthentication(){
+    @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    return auth;
     }
 }

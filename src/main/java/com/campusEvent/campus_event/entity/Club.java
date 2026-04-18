@@ -12,7 +12,7 @@ import java.util.List;
 public class Club {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "Club_ID")
-    long clubID;
+    long clubId;
     @Column(unique = true)
     String clubName;
     @OneToMany(mappedBy = "club") @Nullable

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface EventRepo extends JpaRepository<Event,Long> {
     List<Event> findByEventStatus(EventStatus Eventstatus);
-    //List<Event> findByClub(Long club_id);
+    List<Event> findByClub(Long club_id);
     Event findById(long id);
     List<Event> findAll();
 

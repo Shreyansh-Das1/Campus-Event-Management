@@ -1,23 +1,14 @@
 package com.campusEvent.campus_event.service;
 
-import com.campusEvent.campus_event.dto.Event.EventReqDTO;
-import com.campusEvent.campus_event.dto.Event.EventResDTO;
+import com.campusEvent.campus_event.dto.Event.*;
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.enums.EventStatus;
-import com.campusEvent.campus_event.entity.enums.Role;
-import com.campusEvent.campus_event.relations.Registration;
 import com.campusEvent.campus_event.repository.EventRepo;
-import com.campusEvent.campus_event.repository.RegisRepo;
-import jakarta.transaction.Transactional;
-import lombok.SneakyThrows;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.beans.Transient;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +28,8 @@ public class EventService {
         return mapToDTO(newEv);
     }
 
-    public List<EventResDTO> getAllEvents() {
-        List<Event> ev = eventrepo.findAll();
+    public List<EventResDTO> getAllClubEvents(Long clubID) {
+        List<Event> ev = eventrepo.findByClub(clubID);
         List<EventResDTO> res = new ArrayList<>();
         for (Event e : ev)
             res.add(mapToDTO(e));
@@ -53,13 +44,7 @@ public class EventService {
         eventrepo.save(ev);
         return  mapToDTO(ev);
     }
-   /* public List<EventResDTO> getAllEvents(Long clubID) {
-        List<Event> ev = Eventrepo.findByClub(clubID);
-        List<EventResDTO> res = new ArrayList<>();
-        for (Event e : ev)
-            res.add(mapToDTO(e));
-        return res;
-    }*/
+
   public List<Event> getEvents(){
 
         switch (auth.getAuthorities().iterator().next().getAuthority()){

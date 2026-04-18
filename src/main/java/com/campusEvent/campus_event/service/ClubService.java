@@ -1,7 +1,6 @@
 package com.campusEvent.campus_event.service;
 
-import com.campusEvent.campus_event.dto.Club.ClubReqDTO;
-import com.campusEvent.campus_event.dto.Club.ClubResDTO;
+import com.campusEvent.campus_event.dto.Club.*;
 import com.campusEvent.campus_event.entity.Club;
 import com.campusEvent.campus_event.repository.ClubRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class ClubService {
     ClubResDTO maptoResDTO(Club club){
         ClubResDTO crdto = new ClubResDTO();
         crdto.setClubName(club.getClubName());
-        crdto.setClubID(club.getClubID());
+        crdto.setClubID(club.getClubId());
         return crdto;
     }
 }

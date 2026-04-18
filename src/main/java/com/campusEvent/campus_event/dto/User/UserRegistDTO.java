@@ -7,4 +7,5 @@ public class UserRegistDTO {
     String name;
     String email;
     String password;
+    String number;
 }

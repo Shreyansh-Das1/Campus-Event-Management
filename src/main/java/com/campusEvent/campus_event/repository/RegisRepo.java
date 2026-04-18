@@ -2,7 +2,6 @@ package com.campusEvent.campus_event.repository;
 
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.User;
-import com.campusEvent.campus_event.entity.enums.EventStatus;
 import com.campusEvent.campus_event.relations.Registration;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,5 +13,5 @@ public interface RegisRepo extends JpaRepository<Registration,Long> {
     List<Registration> findByEvent(Event event); //Finds all Event attendees
     List<Registration> findByUser(User user); //Finds all events an user registered for
     Optional<Registration> findById(long id);
-    Optional<Registration> findByEventAndUser(Long eventId, Long userId);
+    Optional<Registration> findByUser_IdAndEvent_Eventid(Long eventId, Long userId);
 }

@@ -2,13 +2,9 @@ package com.campusEvent.campus_event.controller;
 
 import com.campusEvent.campus_event.dto.Event.EventReqDTO;
 import com.campusEvent.campus_event.dto.Event.EventResDTO;
-import com.campusEvent.campus_event.dto.Event.RegistrationDTO;
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.enums.EventStatus;
-import com.campusEvent.campus_event.entity.enums.Role;
-import com.campusEvent.campus_event.relations.Registration;
 import com.campusEvent.campus_event.service.EventService;
-import com.campusEvent.campus_event.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +37,6 @@ public class EventController {
 
     @GetMapping
     public @ResponseBody List<EventResDTO> getEventsByCLub(@RequestParam Long clubID) {
-        return eventService.getAllEvents();
+        return eventService.getAllClubEvents(clubID);
     }
 }

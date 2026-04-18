@@ -4,5 +4,5 @@ import com.campusEvent.campus_event.relations.Membership;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MembershipRepo extends JpaRepository<Membership, Long> {
-    boolean existsByClubAndUser(Long clubId, Long userId);
+    boolean existsByUser_IdAndClub_ClubId(Long userId,Long clubId);
 }
