@@ -1,5 +1,5 @@
 package com.campusEvent.campus_event.entity.enums;
 
 public enum RegisStatus {
-    ACTIVE, CANCELLED
+    ACTIVE, CANCELLED, USED
 }

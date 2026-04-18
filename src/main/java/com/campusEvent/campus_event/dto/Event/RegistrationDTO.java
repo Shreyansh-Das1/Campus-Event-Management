@@ -7,5 +7,5 @@ import lombok.Setter;
 public class RegistrationDTO {
     private long ticketId;
     private String EvTitle;
-    private RegisStatus rs;
+    private RegisStatus regisStatus;
 }

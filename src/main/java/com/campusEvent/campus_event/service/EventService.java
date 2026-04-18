@@ -24,9 +24,9 @@ import java.util.List;
 @Service
 public class EventService {
     @Autowired
-    private EventRepo eventrepo;.
+    private EventRepo eventrepo;
     @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    String role = auth.getAuthorities().iterator().next().getAuthority();
+
 
     @Autowired
     private ClubService cs;
@@ -61,7 +61,8 @@ public class EventService {
         return res;
     }*/
   public List<Event> getEvents(){
-        switch (role){
+
+        switch (auth.getAuthorities().iterator().next().getAuthority()){
             case "ROLE_ADMIN":
                 return eventrepo.findAll();
             case "ROLE_STUDENT":

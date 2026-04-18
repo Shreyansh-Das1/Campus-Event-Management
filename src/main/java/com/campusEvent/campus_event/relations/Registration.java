@@ -24,5 +24,5 @@ public class Registration {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="Event_ID")
     private Event event;
     @Enumerated(value = EnumType.STRING)
-    private RegisStatus rs;
+    private RegisStatus regStats;
 }

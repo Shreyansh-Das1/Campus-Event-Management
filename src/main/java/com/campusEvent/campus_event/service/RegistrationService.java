@@ -1,13 +1,15 @@
 package com.campusEvent.campus_event.service;
 
+import com.campusEvent.campus_event.dto.ResObj;
 import com.campusEvent.campus_event.dto.Event.RegistrationDTO;
+import com.campusEvent.campus_event.entity.Club;
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.User;
 import com.campusEvent.campus_event.entity.enums.RegisStatus;
 import com.campusEvent.campus_event.relations.Registration;
 import com.campusEvent.campus_event.repository.EventRepo;
+import com.campusEvent.campus_event.repository.MembershipRepo;
 import com.campusEvent.campus_event.repository.RegisRepo;
-import com.campusEvent.campus_event.repository.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.jspecify.annotations.Nullable;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Transactional
 @Service
@@ -24,16 +28,63 @@ public class RegistrationService {
     private EventRepo eventrepo;
     @Autowired
     private RegisRepo regisRepo;
-
+    @Autowired
+            private MembershipRepo membershipRepo;
     Event e;
-
     @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    String role = auth.getAuthorities().iterator().next().getAuthority();
+
+
+    public ResObj cancel(Long eventId){
+        User user = (User) auth.getPrincipal();
+        if(!regisRepo.existsByUser(user.getId(), eventId))
+            return new ResObj(false,"Registration does not exist");
+
+        Registration regist = regisRepo.findByEventAndUser(eventId, user.getId()).orElse(null);
+        regist.setRegStats(RegisStatus.CANCELLED);
+        regisRepo.save(regist);
+
+        Event e = regist.getEvent();
+        e.setBooked( e.getBooked() -1);
+        eventrepo.save(e);
+        
+        return new ResObj(true,"Registration has been cancelled successfully");
+    }
+
+    public ResObj checkin(Long registId){
+        if(!regisRepo.existsById(registId))
+           return new  ResObj(false,"Registration does not exist");
+        Registration regist = regisRepo.findById(registId).orElse(null);
+
+        if(!userOfOrgClub(regist.getEvent()))
+            return new ResObj(false,"User does not belong to organizing club");
+
+        if(regist.getRegStats().equals(RegisStatus.CANCELLED))
+            return new ResObj(false,"Registration was cancelled");
+
+        regist.setRegStats(RegisStatus.USED);
+        regisRepo.save(regist);
+        return new ResObj(true,"Attendee Marked Present");
+    }
+
+    public List<Registration> fetchRegistered(){
+        User user = (User) auth.getPrincipal();
+        return regisRepo.findByUser(user);
+
+    }
+
+    boolean userOfOrgClub(Event event){
+        Club organizer= event.getClub();
+        User currUser = (User) auth.getPrincipal();
+        return membershipRepo.existsByClubAndUser(organizer.getClubID(), currUser.getId());
+    }
 
     @Transactional
     @SneakyThrows //Used to declare multiple checked errors could be thrown
     public RegistrationDTO reserveSeat(Long eventId) {
+
         Long userId = Long.parseLong(auth.getName());
+        String role = auth.getAuthorities().iterator().next().getAuthority();
+        //NEVER INVOKE SECURITYCONTEXT OUTSIDE METHODS
         if(!eventrepo.existsById(eventId))
             throw new IllegalStateException("Event Not Found");
         if(!role.equals("ROLE_STUDENT"))
@@ -45,19 +96,21 @@ public class RegistrationService {
             throw new IllegalStateException("Event Full");
         else
             return mapToDTO(eventId, userId);
-
     }
+
+
+
     private RegistrationDTO mapToDTO(Long eventId, Long userId) {
         Registration reg = new Registration();
         reg.setUser((User) auth.getPrincipal());
         Event ev = eventrepo.findById(eventId).get();
         reg.setEvent(ev);
-        reg.setRs(RegisStatus.ACTIVE);
+        reg.setRegStats(RegisStatus.ACTIVE);
         regisRepo.save(reg);
 
         RegistrationDTO dto = new RegistrationDTO();
         dto.setTicketId( reg.getRegistrationId());
-        dto.setRs(reg.getRs());
+        dto.setRegisStatus(reg.getRegStats());
         dto.setEvTitle(ev.getTitle());
         return dto;
     }

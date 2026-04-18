@@ -28,7 +28,7 @@ public class Event {
 
     @Column private LocalTime startTime, endTime;
 
-    @Version private int version;
+    @Version private Long version;
     @Column
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
