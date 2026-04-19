@@ -34,7 +34,7 @@ public class RegistrationService {
         if(!regisRepo.existsByUser(user.getId(), eventId))
             return new ResObj(false,"Registration does not exist");
 
-        Registration regist = regisRepo.findByUser_IdAndEvent_Eventid(eventId, user.getId()).orElse(null);
+        Registration regist = regisRepo.findByUser_IdAndEvent_Eventid(user.getId(), eventId).orElse(null);
         regist.setRegStats(RegisStatus.CANCELLED);
         regisRepo.save(regist);
 
@@ -70,14 +70,14 @@ public class RegistrationService {
     boolean userOfOrgClub(Event event){
         Club organizer= event.getClub();
         User currUser = (User) getAuthentication().getPrincipal();
-        return membershipRepo.existsByUser_IdAndClub_ClubId(organizer.getClubId(), currUser.getId());
+        return membershipRepo.existsByUser_IdAndClub_ClubId(currUser.getId(), organizer.getClubId());
     }
 
     @Transactional
     @SneakyThrows //Used to declare multiple checked errors could be thrown
     public RegistrationDTO reserveSeat(Long eventId) {
 
-        Long userId = Long.parseLong(getAuthentication().getName());
+        Long userId = ((User)getAuthentication().getPrincipal()).getId();
         String role = getAuthentication().getAuthorities().iterator().next().getAuthority();
         //NEVER INVOKE SECURITYCONTEXT OUTSIDE METHODS
         if(!eventrepo.existsById(eventId))

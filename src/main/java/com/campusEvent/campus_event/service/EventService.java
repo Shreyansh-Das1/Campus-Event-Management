@@ -16,7 +16,6 @@ import java.util.List;
 public class EventService {
     @Autowired
     private EventRepo eventrepo;
-    @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 
     @Autowired
@@ -29,7 +28,7 @@ public class EventService {
     }
 
     public List<EventResDTO> getAllClubEvents(Long clubID) {
-        List<Event> ev = eventrepo.findByClub(clubID);
+        List<Event> ev = eventrepo.findByClub_ClubId(clubID);
         List<EventResDTO> res = new ArrayList<>();
         for (Event e : ev)
             res.add(mapToDTO(e));
@@ -47,12 +46,13 @@ public class EventService {
 
   public List<Event> getEvents(){
 
-        switch (auth.getAuthorities().iterator().next().getAuthority()){
-            case "ROLE_ADMIN":
-                return eventrepo.findAll();
-            case "ROLE_STUDENT":
-                return eventrepo.findByEventStatus(EventStatus.APPROVED);
-            default:
+      @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      switch (auth.getAuthorities().iterator().next().getAuthority()){
+        case "ROLE_ADMIN":
+            return eventrepo.findAll();
+        case "ROLE_STUDENT":
+            return eventrepo.findByEventStatus(EventStatus.APPROVED);
+        default:
                 List<Event> evs = eventrepo.findByEventStatus(EventStatus.APPROVED);
                 evs.addAll(eventrepo.findByEventStatus(EventStatus.PENDING));
                 return evs;
