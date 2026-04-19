@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 @Getter @Setter
-@Table(name  = "users")
+@Table(name  = "users", indexes = @Index(columnList = "User_ID"))
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

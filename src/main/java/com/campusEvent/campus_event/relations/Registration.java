@@ -10,7 +10,11 @@ import lombok.Setter;
 @Entity
 @Table(
         name = "Registration",
-    uniqueConstraints= { @UniqueConstraint(columnNames = {"User_ID", "Event_ID"}) }
+    uniqueConstraints= { @UniqueConstraint(columnNames = {"User_ID", "Event_ID"}) },
+        indexes = {
+                @Index(columnList = "Registration_ID"),
+                @Index(columnList = "User_ID, Event_ID")
+        }
 )
 @Getter @Setter
 public class Registration {

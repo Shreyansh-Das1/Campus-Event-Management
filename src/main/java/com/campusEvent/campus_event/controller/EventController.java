@@ -5,6 +5,8 @@ import com.campusEvent.campus_event.dto.Event.EventResDTO;
 import com.campusEvent.campus_event.entity.Event;
 import com.campusEvent.campus_event.entity.enums.EventStatus;
 import com.campusEvent.campus_event.service.EventService;
+import com.campusEvent.campus_event.service.QRCodeService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ public class EventController {
 
     @Autowired
     EventService eventService;
+    @Autowired
+    QRCodeService qrcs;
 
     @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping("/create")
@@ -38,5 +42,10 @@ public class EventController {
     @GetMapping
     public @ResponseBody List<EventResDTO> getEventsByCLub(@RequestParam Long clubID) {
         return eventService.getAllClubEvents(clubID);
+    }
+
+    @GetMapping("/{eventId}/fetchticket")
+    public @ResponseBody byte[] fetchTicket(@PathVariable long eventId) {
+        return qrcs.fetchTicket(eventId);
     }
 }

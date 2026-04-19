@@ -2,13 +2,13 @@ package com.campusEvent.campus_event.entity;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Data
+@Table(indexes = @Index(columnList =  "Club_ID"))
 public class Club {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "Club_ID")

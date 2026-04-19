@@ -2,13 +2,12 @@ package com.campusEvent.campus_event.entity;
 
 import com.campusEvent.campus_event.entity.enums.EventStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import java.time.*;
 
-@Getter
-@Setter
+@Data
 @Entity
+@Table(indexes = @Index(columnList="Event_ID"))
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

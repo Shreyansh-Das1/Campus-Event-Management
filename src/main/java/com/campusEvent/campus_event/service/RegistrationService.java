@@ -114,7 +114,7 @@ public class RegistrationService {
         return dto;
     }
 
-    private Authentication getAuthentication(){
+    public Authentication getAuthentication(){
     @Nullable Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     return auth;
     }
