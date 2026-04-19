@@ -1,4 +1,4 @@
-# CampusPass
+# CamPass
 
 > Full-stack university event management & ticketing platform
 
